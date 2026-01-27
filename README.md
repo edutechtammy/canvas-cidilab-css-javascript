@@ -12,16 +12,34 @@ This project provides CSS and JavaScript files that recreate the functionality o
 
 ```
 ├── README.md
-├── cidilabs-styles.css          # Main CSS file for all CidiLabs components
-├── cidilabs-scripts.js          # Main JavaScript file for interactive functionality
+├── index.html                       # 🏠 Landing page with template navigation
+├── cidilabs-styles.css              # Main CSS file for all CidiLabs components
+├── cidilabs-scripts.js              # Main JavaScript file for interactive functionality
 ├── CidiLabs Button Tabs Vertical.html    # ✅ Completed - Vertical tab navigation
-├── CidiLabs Flipcards.html      # 🚧 Pending implementation
-├── CidiLabs Match Items.html     # 🚧 Pending implementation
-├── CidiLabs Modals.html          # 🚧 Pending implementation
-├── CidiLabs Select All.html      # 🚧 Pending implementation
-├── CidiLabs Sort Items.html      # 🚧 Pending implementation
-└── Order Items.html              # 🚧 Pending implementation
+├── CidiLabs Flipcards.html          # 🚧 Pending implementation
+├── CidiLabs Match Items.html         # 🚧 Pending implementation
+├── CidiLabs Modals.html              # 🚧 Pending implementation
+├── CidiLabs Select All.html          # 🚧 Pending implementation
+├── CidiLabs Sort Items.html          # 🚧 Pending implementation
+└── Order Items.html                  # 🚧 Pending implementation
 ```
+
+## Quick Start
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/edutechtammy/canvas-cidilab-css-javascript.git
+   ```
+
+2. **Open in VS Code**:
+   ```bash
+   cd canvas-cidilab-css-javascript
+   code .
+   ```
+
+3. **Start Live Server**: Click "Go Live" in VS Code status bar
+
+4. **Access Landing Page**: Navigate to `http://localhost:5500` to view the template dashboard
 
 ## Implemented Components
 
@@ -39,9 +57,10 @@ This project provides CSS and JavaScript files that recreate the functionality o
 ## How to Use
 
 1. **Setup**: Open the project folder in VS Code
-2. **Test Locally**: Use the "Go Live" button (Live Server extension) to serve files
-3. **View Templates**: Open any HTML file in your browser to test functionality
-4. **Deploy**: Copy the HTML content (without the boilerplate) into Canvas pages
+2. **Start Development**: Use the "Go Live" button (Live Server extension) to serve files
+3. **Navigate**: Open `index.html` to access the main landing page with template navigation
+4. **Test Templates**: Click on completed templates to test functionality
+5. **Deploy**: Copy the HTML content (without the boilerplate) into Canvas pages
 
 ## Important Constraints
 
