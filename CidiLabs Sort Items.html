@@ -1,0 +1,54 @@
+<!--  The CidiLabs DesignPLUS Order Items tool (often referred to as Sort Items or Sorting Interactions) is an interactive, drag-and-drop activity designed for the Canvas Learning Management System. It allows instructors to create engaging, formative learning experiences that require students to arrange items in a specific, correct order. 
+Key Features and Description:
+-- Interactive Learning: Students physically drag and drop items to organize them, which encourages higher-order thinking and improves long-term retention of information.
+-- Immediate Feedback: The tool provides instant feedback to students, allowing them to verify their understanding immediately.
+-- Accessibility: As a DesignPLUS feature, these sorting interactions are designed to be accessible, ensuring they can be used by all students.
+-- Easy Implementation: The tool is part of the DesignPLUS Sidebar (accessed via the "rocket ship" icon in the Canvas Rich Content Editor), allowing for quick creation without needing to write custom HTML or JavaScript.
+-- Use Cases: It is ideal for sequencing historical events, organizing steps in a process, sorting data, or categorizing concepts. 
+
+This tool is part of a broader set of DesignPLUS interactive elements that help reduce cognitive load and increase engagement in online courses. 
+
+Custom styling has been added to the default template to align with TSTC branding, including a Texas Blue background and red borders around the sortable items.
+
+-->
+
+<div class="dp-si-sort-pool dp-si-sort-type-text" style="background-color: #1d2757; padding: 20px; border-radius: 10px;">
+        <h3 class="dp-has-icon" style="color: white;"><i class="fas fa-exchange-alt"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i> Sort Items</h3>
+        <p style="color: white; border: none; outline: none; text-shadow: none; background: transparent;">Sort the following items into their correct categories.</p>
+        <div class="dp-si-sort-content">
+            <div class="dp-si-sort-bucket dp-si-sort-answer-bank dp-si-sort-type-text" style="border: 2px solid #d13138; border-radius: 10px; padding: 15px;">
+                <div class="dp-si-sort-bucket-content">
+                    <h4 class="dp-si-sort-bucket-header">Answer Bank</h4>
+                    <div class="dp-action-item dp-action-item-block dp-action-item-instructions" style="display: none;" aria-hidden="true">
+                        <p>Add the correct items to their buckets and any distractors to this bucket. All items will move to this bucket to start for students.</p>
+                    </div>
+                    <ul>
+                        <li class="dp-si-item-text">Distractor</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container-fluid pt-3 px-0">
+                <div class="row gy-3">
+                    <div class="dp-si-sort-bucket dp-si-sort-type-text col-xs-12 col-md-6" style="border: 2px solid #d13138; border-radius: 10px; padding: 15px;">
+                        <div class="dp-si-sort-bucket-content">
+                            <h4 class="dp-si-sort-bucket-header">Bucket 1</h4>
+                            <ul>
+                                <li class="dp-si-item-text">Item 1.1</li>
+                                <li class="dp-si-item-text">Item 1.2</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="dp-si-sort-bucket dp-si-sort-type-text col-xs-12 col-md-6" style="border: 2px solid #d13138; border-radius: 10px; padding: 15px;">
+                        <div class="dp-si-sort-bucket-content">
+                            <h4 class="dp-si-sort-bucket-header">Bucket 2</h4>
+                            <ul>
+                                <li class="dp-si-item-text">Item 2.1</li>
+                                <li class="dp-si-item-text">Item 2.2</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>&nbsp;</p>

@@ -1,0 +1,126 @@
+/* CidiLabs DesignPlus CSS for Local Development
+ * This file recreates the styling and functionality of CidiLabs DesignPlus components
+ * for local testing outside of Canvas LMS environment
+ */
+
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    color: #333;
+}
+
+/* Button Tabs Vertical Styles */
+.dp-panels-wrapper.dp-tabs-buttons-vertical {
+    display: flex;
+    border: none;
+    border-radius: 8px;
+    overflow: visible;
+}
+
+/* Tab Navigation Sidebar */
+.dp-tabs-buttons-vertical .dp-tab-nav {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    background-color: #fff;
+    padding: 8px;
+    gap: 4px;
+}
+
+.dp-tabs-buttons-vertical .dp-panel-heading {
+    margin: 0;
+    padding: 15px 20px;
+    background-color: #1d2757;
+    color: white;
+    border: none;
+    border-bottom: 1px solid #14193e;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 20px;
+    font-weight: normal;
+    text-align: left;
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.dp-tabs-buttons-vertical .dp-panel-heading:last-child {
+    /* No special styling needed with gaps */
+}
+
+.dp-tabs-buttons-vertical .dp-panel-heading:hover {
+    background-color: #14193e;
+}
+
+.dp-tabs-buttons-vertical .dp-panel-heading.active {
+    background-color: #14193e;
+    color: white;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 0 1px #ccc;
+}
+
+/* Content Area */
+.dp-tabs-buttons-vertical .dp-content-area {
+    flex: 1;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-left: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 0;
+    min-height: fit-content;
+}
+
+.dp-tabs-buttons-vertical .dp-panel-content {
+    padding: 16px 20px;
+    background-color: white;
+    display: none;
+    font-family: inherit;
+    font-size: 20px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.dp-tabs-buttons-vertical .dp-panel-content.active {
+    display: block;
+}
+
+/* Hide original panel groups - we'll restructure in JS */
+.dp-tabs-buttons-vertical .dp-panel-group {
+    display: none;
+}
+
+/* Color Variations */
+.dp-panel-color-dp-primary .dp-panel-heading {
+    background-color: #1d2757;
+}
+
+.dp-panel-color-dp-primary .dp-panel-heading.active,
+.dp-panel-color-dp-primary .dp-panel-heading:hover {
+    background-color: #14193e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dp-tabs-buttons-vertical {
+        flex-direction: column;
+    }
+
+    .dp-tabs-buttons-vertical .dp-panel-group {
+        flex-direction: column;
+    }
+
+    .dp-tabs-buttons-vertical .dp-panel-heading {
+        min-width: auto;
+        max-width: none;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+}

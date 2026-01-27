@@ -1,0 +1,23 @@
+<!-- 
+ This is in beta, so there is not a lot of information on it. Exploration of the template in active use shows that students click on the items in the Items to Match part fo the interface. If the two arw a pair, then they get a brief checkmark and are added to the Matched Items section under the selection box. Then the two go grey and the student can match two other pairs. Once all of them are paired, then the scoring box shifts to show the score and a reset button. I think this section is fully controlled by Cidilabs Javascript.
+
+ Custom styling has been added for TSTC branding. A Texas Blue background and red borders around the matching items.
+
+-->
+
+<div class="dp-match-items dp-match-pairing dp-si-rounded dp-si-outline" style="background-color: #1d2757; padding: 20px; border-radius: 10px; border: 2px solid #d13138;">
+        <h3 class="dp-has-icon" style="color: white;"><i class="fas fa-object-ungroup"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i> Match Items</h3>
+        <p class="dp-match-instructions" style="color: white; border: none; background: transparent;">Select each set of two matching items.</p>
+        <div class="dp-unmatched-items">
+            <h4 class="dp-has-icon unmatched-items-header"><i class="fas fa-search"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i> Items to Match</h4>
+            <dl class="dp-match dp-match-text">
+                <dt data-pair-id="pair-0">Pair 1 Item 1</dt>
+                <dd data-pair-id="pair-0">Pair 1 Item 2</dd>
+                <dt data-pair-id="pair-1">Pair 2 Item 1</dt>
+                <dd data-pair-id="pair-1">Pair 2 Item 2</dd>
+                <dt data-pair-id="pair-2">Pair 3 Item 1</dt>
+                <dd data-pair-id="pair-2">Pair 3 Item 2</dd>
+            </dl>
+        </div>
+    </div>
+    <p>&nbsp;</p>

@@ -1,0 +1,89 @@
+<!-- CidiLabs Flip Cards:  CidiLabs DesignPLUS Flip Cards are interactive, accessible, and customizable digital flashcards designed to enhance engagement and active recall within the Canvas Learning Management System. They allow instructors to create "purposeful pauses" in learning by displaying content (text or images) that flips over when a student clicks on it. 
+Key Features and Benefits
+-- Interactivity: Designed to improve long-term memory through active recall.
+-- Accessibility: Fully accessible to all users, including keyboard navigation support (space bar/enter key).
+-- Customization: Supports text, images, and can be configured for various uses like vocabulary,, concepts, or flashcards.
+-- DesignPLUS Integration: Part of the Design Tools for Canvas, allowing for easy creation without needing to know HTML.
+-- Visual Organization: Enables instructors to organize content in a compact, engaging format. 
+Usage in Canvas
+Functionality: Students can click on the cards to reveal the back side.
+Formatting: Cards can be set to equal height for consistent, polished presentation.
+Placement: Can be added to pages, assignments, or discussions within Canvas.   
+
+The base flip cards template has been adapted so that 
+-- the code gives a row of three of them which has been the typical need. If you need to split out to singles just examine the code and break one out from the row and column portions of the code.
+-- The front of the cards has an added icon (question mark) to indicate interactivity and it is using the TSTC brand color, Texas Blue.
+-->
+
+<div class="dp-column-container container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="dp-flip-card dp-flip-card-fast dp-flip-card-show-both" aria-label="Flip Card" data-front="Front Card" data-back="Back Card">
+                <div class="dp-flip-card-inner">
+                    <div class="dp-front-card">
+                        <div class="dp-card card h-100 cp-bg-dp-primary dp-shadow-r2 mx-auto d-block">
+                            <div class="card-body">
+                                <h4 class="card-title dp-ignore-theme dp-has-icon"  style="text-align: center;"><i class="dp-icon fas fa-question-circle dp-i-size-large" aria-hidden="true"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i><strong><br /></strong>Card 1: Front Card</h4>
+                                <p class="card-text">Card 1: Front Body Text</p>
+                            </div>
+                        </div>
+                    </div>
+                <div class="dp-back-card">
+                    <div class="dp-card card h-100"">
+                        <div class="card-body">
+                            <h4 class="card-title dp-ignore-theme">Card 1: Back Card</h4>
+                            <p class="card-text">Card 1: Back Body Text</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="dp-flip-card dp-flip-card-fast dp-flip-card-show-both  mx-auto d-block" aria-label="Flip Card" data-front="Front Card" data-back="Back Card">
+                <div class="dp-flip-card-inner">
+                    <div class="dp-front-card">
+                        <div class="dp-card card h-100 cp-bg-dp-primary dp-shadow-r2 mx-auto d-block"">
+                            <div class="card-body">
+                                <h4 class="card-title dp-ignore-theme dp-has-icon"  style="text-align: center;"><i class="dp-icon fas fa-question-circle dp-i-size-large" aria-hidden="true"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i><strong><br /></strong>Card 2: Front Card</h4>
+                                <p class="card-text">Card 2: FrontBody Text</p>
+                            </div>
+                        </div>
+                    </div>
+               
+                <div class="dp-back-card">
+                    <div class="dp-card card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title dp-ignore-theme">Card 2: Back Card</h4>
+                            <p class="card-text">Card 2: BackBody Text</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="dp-flip-card dp-flip-card-fast dp-flip-card-show-both" aria-label="Flip Card" data-front="Front Card" data-back="Back Card">
+                <div class="dp-flip-card-inner">
+                    <div class="dp-front-card">
+                        <div class="dp-card card h-100 cp-bg-dp-primary dp-shadow-r2 mx-auto d-block"">
+                            <div class="card-body">
+                                <h4 class="card-title dp-ignore-theme dp-has-icon"  style="text-align: center;"><i class="dp-icon fas fa-question-circle dp-i-size-large" aria-hidden="true"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i><strong><br /></strong>Card 3: Front Card</h4>
+                                <p class="card-text">Card 3: Front Body Text</p>
+                            </div>
+                        </div>
+                    </div>
+               
+                <div class="dp-back-card">
+                    <div class="dp-card card h-100">
+                        <div class="card-body">
+                            <h4 class="card-title dp-ignore-theme">Card 3: Back Card</h4>
+                            <p class="card-text">Card 3: Back Body Text</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
