@@ -78,6 +78,18 @@
 }
 
 /* ========================================
+ * Normal Whole page sytles
+ * These are Canvas level style settings that are being mimicked for local testing
+ * ======================================== */
+
+body {
+    font-family: "Lato", "Segoe UI", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    color: #333;
+}
+
+
+/* ========================================
  * CIDILABS DESIGNPLUS COMPONENT STYLES
  * Component-specific styling and interactive functionality
  * ======================================== */
@@ -87,11 +99,7 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.5;
-    color: #333;
-}
+
 
 /* ===========================================
    BUTTON TABS VERTICAL STYLES
@@ -511,7 +519,6 @@ h4.dp-has-icon {
     margin: 0 0 10px 0;
     font-size: 24px;
     font-weight: bold;
-    text-align: right;
     line-height: 1.2;
 }
 
@@ -531,32 +538,6 @@ h4.dp-has-icon {
 
 .dp-order.dp-order-text {
     max-width: 400px;
-}
-
-.dp-order li {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    padding: 10px 15px;
-    margin: 8px 0;
-    cursor: move;
-    transition: all 0.2s ease;
-    user-select: none;
-    list-style: none;
-    position: relative;
-}
-
-.dp-order li:hover {
-    background: #e9ecef;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.dp-order li:first-child {
-    margin-top: 0;
-}
-
-.dp-order li:last-child {
-    margin-bottom: 0;
 }
 
 /* Component-specific icon positioning */
