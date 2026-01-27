@@ -13,15 +13,17 @@ This project provides CSS and JavaScript files that recreate the functionality o
 ```
 ├── README.md
 ├── index.html                       # 🏠 Landing page with template navigation
-├── cidilabs-styles.css              # Main CSS file for all CidiLabs components
+├── cidilabs-core.css                # Core CidiLabs classes (dp-has-icon, dp-icon-content, etc.)
+├── cidilabs-styles.css              # Component-specific CSS for DesignPlus functionality  
 ├── cidilabs-scripts.js              # Main JavaScript file for interactive functionality
-├── CidiLabs Button Tabs Vertical.html    # ✅ Completed - Vertical tab navigation
-├── CidiLabs Flipcards.html          # 🚧 Pending implementation
-├── CidiLabs Match Items.html         # 🚧 Pending implementation
-├── CidiLabs Modals.html              # 🚧 Pending implementation
-├── CidiLabs Select All.html          # 🚧 Pending implementation
-├── CidiLabs Sort Items.html          # 🚧 Pending implementation
-└── Order Items.html                  # 🚧 Pending implementation
+├── button-tabs-vertical.html        # ✅ Completed - Vertical tab navigation
+├── flipcards.html                   # ✅ Completed - Interactive flip cards
+├── modals.html                      # ✅ Completed - Pop-up dialog boxes
+├── order-items.html                 # ✅ Completed - Drag-and-drop ordering
+├── match-items.html                 # 🚧 Pending implementation
+├── select-all.html                  # 🚧 Pending implementation
+├── sort-items.html                  # 🚧 Pending implementation
+└── bootstrap.min.css/.js            # Bootstrap framework files
 ```
 
 ## Quick Start
@@ -44,7 +46,7 @@ This project provides CSS and JavaScript files that recreate the functionality o
 ## Implemented Components
 
 ### ✅ Button Tabs Vertical
-- **File**: `CidiLabs Button Tabs Vertical.html`
+- **File**: `button-tabs-vertical.html`
 - **Functionality**: Vertical navigation tabs with content switching
 - **Features**:
   - Texas State Technical College branding colors (#1d2757)
@@ -53,6 +55,17 @@ This project provides CSS and JavaScript files that recreate the functionality o
   - Responsive design
   - Full accessibility support (ARIA attributes, keyboard navigation)
   - System font stack for optimal readability
+
+### ✅ Flipcards
+- **File**: `flipcards.html`
+- **Functionality**: Interactive cards that flip to reveal content on the back
+- **Features**:
+  - 3D flip animation with CSS transforms
+  - TSTC branding colors and styling
+  - Question mark icons indicating interactivity
+  - 3-card responsive grid layout
+  - Click and keyboard flip functionality
+  - Accessibility compliant with ARIA labels
 
 ## How to Use
 
@@ -109,7 +122,184 @@ When adding new components:
 3. Use the Texas State Technical College color palette
 4. Test across different screen sizes
 5. Update this README with component details
+6. **Add consistent section headers**: Use the established commenting format for both CSS and JavaScript:
+
+### CSS Section Headers:
+```css
+/* ===========================================
+   COMPONENT NAME STYLES
+   =========================================== */
+```
+
+### JavaScript Section Headers:
+```javascript
+// =========================================
+// COMPONENT NAME FUNCTIONALITY
+// =========================================
+```
+
+## ⚠️ CidiLabs Template Integrity Guidelines
+
+**CRITICAL**: When working with CidiLabs templates, maintain the exact structure provided by CidiLabs to ensure Canvas compatibility.
+
+### Template Structure Rules
+
+1. **Preserve Original Classes & IDs**: Never modify CidiLabs classes (`dp-*`) or ID patterns (`dpPopup0`, etc.)
+2. **Keep Inline Styles Intact**: CidiLabs provides inline styles as part of the template structure - do not modify them
+3. **CSS Override Strategy**: Use external CSS with appropriate specificity (`!important` when needed) to achieve desired styling
+4. **HTML Structure**: Maintain exact HTML structure and attribute patterns provided by CidiLabs
+
+### Example - Modal Template:
+```html
+<!-- ✅ CORRECT: Preserve exact CidiLabs structure -->
+<a id="dpPopup0" class="dp-popover-trigger" href="#dpPopup0Content">Trigger Text</a>
+<div id="dpPopup0Content" class="dp-popover-content dp-popup-content" 
+     style="border: 1px solid #A9A9A9; background: #f7f7f7; padding: 10px; width: 600px; max-width: 100%; margin: auto; border-radius: 3px;">
+    <p>Content</p>
+</div>
+
+<!-- ❌ INCORRECT: Don't modify inline styles or add custom attributes -->
+<div class="dp-popover-content custom-class" style="border-radius: 8px;">
+```
+
+### Why This Matters:
+- **Canvas Deployment**: Templates must work identically when pasted into Canvas
+- **Future Updates**: CidiLabs may update their structure - our changes shouldn't break compatibility  
+- **Team Consistency**: Other developers need to use these exact templates
+- **Maintenance**: Easier to debug when structure matches official CidiLabs templates
+
+### Styling Approach:
+- **External CSS**: Handle all visual customizations in `cidilabs-styles.css`
+- **Specificity**: Use CSS specificity and `!important` to override inline styles when needed
+- **Documentation**: Note any CSS overrides in component comments
+
+## 🏗️ Project Architecture Guidelines
+
+### File Structure & Responsibilities
+
+**Core Files:**
+- `cidilabs-core.css` - Core CidiLabs classes (dp-has-icon, dp-icon-content, icon system)
+- `cidilabs-styles.css` - Component-specific styling and DesignPlus functionality
+- `cidilabs-scripts.js` - All interactive functionality and JavaScript
+- `bootstrap.min.css` / `bootstrap.min.js` - Bootstrap framework (if needed)
+
+**Template Files:**
+- `*.html` files contain minimal boilerplate + CidiLabs template structure only
+- NO internal `<style>` blocks (except for minimal container styling if absolutely necessary)
+- NO internal `<script>` blocks (all JavaScript goes in `cidilabs-scripts.js`)
+
+### CSS File Hierarchy
+
+1. **cidilabs-core.css**: Foundational CidiLabs classes that work across components
+   - `dp-has-icon` / `dp-icon-content` system
+   - Core icon implementations
+   - Base Canvas integration classes
+
+2. **cidilabs-styles.css**: Component-specific enhancements and DesignPlus styling
+   - Button Tabs Vertical styles
+   - Flip Cards animations
+   - Modal customizations
+   - TSTC branding and color overrides
+
+### Development Rules
+
+**✅ CORRECT Approach:**
+```html
+<!-- Minimal boilerplate for local testing -->
+<!DOCTYPE html>
+<html><head>
+    <link rel="stylesheet" href="cidilabs-core.css">
+    <link rel="stylesheet" href="cidilabs-styles.css">
+</head><body>
+    <!-- CidiLabs Template (preserve exactly) -->
+    <div class="dp-component">...</div>
+    <script src="cidilabs-scripts.js"></script>
+</body></html>
+```
+
+**❌ INCORRECT Approach:**
+```html
+<!-- Don't add internal styles or scripts -->
+<style>
+    .custom-styling { ... }
+</style>
+<script>
+    // Custom JavaScript here
+</script>
+```
+
+### Why This Architecture Matters:
+1. **Clear Separation**: Template HTML vs. local testing functionality
+2. **Canvas Deployment**: Easy to extract just the CidiLabs template portion
+3. **Maintenance**: All styling/scripting centralized in dedicated files
+4. **Team Consistency**: Everyone follows the same pattern
+5. **Debugging**: Issues can be traced to specific files (CSS vs JS vs template structure)
+
+## 🎯 Session Context & Progress Tracking
+
+### Current Session Status (Jan 27, 2026)
+**Completed Components:**
+- ✅ **Button Tabs Vertical**: Full functionality with TSTC branding and secondary color option
+- ✅ **Flipcards**: 3D flip animations, enhanced icons, compact spacing (resolved CSS troubleshooting)
+- ✅ **Modals**: Canvas-accurate styling, proper trigger integration, template integrity restored
+
+**Active Focus**: Modals component finalized with clean CidiLabs template structure preserved
+
+### Key Session Learnings:
+1. **Context Fatigue Risk**: Extended sessions can lead to drift from core constraints
+2. **Template Integrity Critical**: Never modify CidiLabs HTML structure or inline styles  
+3. **CSS Override Strategy**: Use external CSS with `!important` for visual enhancements
+4. **Canvas Accuracy**: Always reference Canvas screenshots for styling accuracy
+
+### Next Session Priorities:
+1. **Match Items Component**: Implement drag-and-drop functionality with CidiLabs classes
+2. **Template Verification**: Ensure all components match original CidiLabs structure
+3. **Cross-Component Testing**: Verify no CSS conflicts between components
+4. **Documentation**: Update component completion status
+
+### Development Constraints Refresher:
+- **DO NOT CHANGE**: CidiLabs template HTML structure, classes, IDs, or inline styles
+- **CSS ONLY**: All styling modifications through external CSS files
+- **Accessibility**: Maintain keyboard navigation and ARIA attributes
+- **Canvas Compatibility**: Templates must work identically when deployed to Canvas
 
 ---
 
 *This project enhances the efficiency of instructional design workflows by providing local testing capabilities for CidiLabs DesignPlus components.*
+
+## Troubleshooting Log
+
+### Issue: Flipcard CSS Changes Not Applying (Jan 27, 2026)
+
+**Problem**: Multiple CSS updates to flipcard styling are not being reflected in browser, despite cache clearing and server restarts.
+
+**Attempted Solutions**:
+1. **Cache Busting**: Added version parameters to CSS links (`?v=1.0`, `?v=1.1`, `?v=1.2`)
+2. **Hard Browser Refresh**: Ctrl+F5, Cmd+Shift+R, Developer Tools cache clearing
+3. **CSS Specificity**: Added `!important` declarations and more specific selectors
+4. **Multiple Selector Targeting**: 
+   - `.dp-flip-card .dp-has-icon::after`
+   - `.dp-front-card .dp-has-icon::after`
+   - `h4.dp-has-icon::after`
+5. **Server Restart**: VS Code Live Server restarted
+6. **Direct File Access**: Tested via double-clicking index.html in Finder
+7. **Element Positioning**: Added specific styles for h4 elements with `position: relative`
+
+**Changes Made During Troubleshooting**:
+- Flip icon size: 20px → 30px
+- Icon colors: White background/blue text → Blue background/white text  
+- Icon position: bottom: -10px → bottom: -15px → bottom: -25px
+- Added white border: 2px solid white
+- Added z-index: 10
+- Enhanced CSS selectors for better targeting
+
+**Status**: ✅ **RESOLVED** - Issue was CSS selector specificity. Fixed by targeting `.dp-flip-card::after` directly and removing duplicate selectors.
+
+**Final Solution**: 
+- Single flip icon using `.dp-flip-card::after`
+- White background with blue arrow (`color: #1d2757`)
+- Blue border (`border: 2px solid #1d2757`) 
+- Proper positioning (`bottom: -15px`) on card edge
+- Clean, professional appearance that matches/exceeds Canvas quality
+
+**Next Steps**: Root cause analysis needed - possible file system, build process, or CSS syntax issue.

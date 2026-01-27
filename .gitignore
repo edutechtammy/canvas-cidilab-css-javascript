@@ -14,6 +14,10 @@ Thumbs.db
 *.swo
 *~
 
+# Bootstrap (currently using minimal local versions)
+# In production, consider using CDN or npm package manager
+# bootstrap.min.css and bootstrap.min.js are custom minimal versions for local development
+
 # Logs
 logs
 *.log
