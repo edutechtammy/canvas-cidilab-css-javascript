@@ -13,8 +13,7 @@ This project provides CSS and JavaScript files that recreate the functionality o
 ```
 ├── README.md
 ├── index.html                       # 🏠 Landing page with template navigation
-├── cidilabs-core.css                # Core CidiLabs classes (dp-has-icon, dp-icon-content, etc.)
-├── cidilabs-styles.css              # Component-specific CSS for DesignPlus functionality  
+├── cidilabs-styles.css              # All CSS: CidiLabs classes, component styling, and DesignPLUS functionality
 ├── cidilabs-scripts.js              # Main JavaScript file for interactive functionality
 ├── button-tabs-vertical.html        # ✅ Completed - Vertical tab navigation
 ├── flipcards.html                   # ✅ Completed - Interactive flip cards
@@ -113,6 +112,11 @@ The following components are ready for implementation:
 - **JavaScript**: Vanilla JS with accessibility features and event handling
 - **Browser Support**: Modern browsers with system font support
 - **Responsive**: Mobile-friendly layouts included
+- **FontAwesome Version**: **5.15.4** (Critical for Canvas compatibility)
+  - Canvas uses FontAwesome 5.15.4, NOT the latest 6.x versions
+  - FontAwesome 6.x renders icons as outlined/hollow - incompatible with Canvas
+  - FontAwesome 5.15.4 renders icons as solid/filled - matches Canvas exactly
+  - Always use: `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css`
 
 ## Contributing
 
@@ -178,8 +182,7 @@ When adding new components:
 ### File Structure & Responsibilities
 
 **Core Files:**
-- `cidilabs-core.css` - Core CidiLabs classes (dp-has-icon, dp-icon-content, icon system)
-- `cidilabs-styles.css` - Component-specific styling and DesignPlus functionality
+- `cidilabs-styles.css` - All component styling, DesignPlus functionality, and CidiLabs classes (dp-has-icon, dp-icon-content, etc.)
 - `cidilabs-scripts.js` - All interactive functionality and JavaScript
 - `bootstrap.min.css` / `bootstrap.min.js` - Bootstrap framework (if needed)
 
@@ -190,12 +193,10 @@ When adding new components:
 
 ### CSS File Hierarchy
 
-1. **cidilabs-core.css**: Foundational CidiLabs classes that work across components
+1. **cidilabs-styles.css**: All styling including foundational CidiLabs classes and component-specific enhancements
    - `dp-has-icon` / `dp-icon-content` system
-   - Core icon implementations
+   - Core icon implementations  
    - Base Canvas integration classes
-
-2. **cidilabs-styles.css**: Component-specific enhancements and DesignPlus styling
    - Button Tabs Vertical styles
    - Flip Cards animations
    - Modal customizations
@@ -208,7 +209,6 @@ When adding new components:
 <!-- Minimal boilerplate for local testing -->
 <!DOCTYPE html>
 <html><head>
-    <link rel="stylesheet" href="cidilabs-core.css">
     <link rel="stylesheet" href="cidilabs-styles.css">
 </head><body>
     <!-- CidiLabs Template (preserve exactly) -->

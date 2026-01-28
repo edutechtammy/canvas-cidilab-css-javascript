@@ -241,14 +241,14 @@ function initializeFlipCards() {
  */
 function initializeOrderItems() {
     const orderContainers = document.querySelectorAll('.dp-order-wrapper');
-    
+
     orderContainers.forEach(container => {
         const orderList = container.querySelector('.dp-order');
         if (!orderList) return;
 
         // Store original order
         const originalItems = Array.from(orderList.children).map(li => li.textContent.trim());
-        
+
         // Add controls if they don't exist
         if (!container.querySelector('.dp-order-controls')) {
             addOrderControls(container, orderList, originalItems);
@@ -256,7 +256,7 @@ function initializeOrderItems() {
 
         // Initialize drag and drop
         initializeDragAndDrop(orderList);
-        
+
         // Start timer
         startTimer(container);
     });
@@ -265,35 +265,35 @@ function initializeOrderItems() {
 function addOrderControls(container, orderList, originalItems) {
     const controlsDiv = document.createElement('div');
     controlsDiv.className = 'dp-order-controls';
-    
+
     const buttonsDiv = document.createElement('div');
     buttonsDiv.className = 'dp-order-buttons';
-    
+
     const checkButton = document.createElement('button');
     checkButton.className = 'dp-order-check';
     checkButton.innerHTML = '✓ Check';
     checkButton.addEventListener('click', () => checkOrder(orderList, originalItems));
-    
+
     const resetButton = document.createElement('button');
     resetButton.className = 'dp-order-reset';
     resetButton.innerHTML = '↻ Reset';
     resetButton.addEventListener('click', () => resetOrder(orderList, originalItems));
-    
+
     const timerDiv = document.createElement('div');
     timerDiv.className = 'dp-order-timer';
     timerDiv.innerHTML = 'Time <span class="timer-display">0:00</span> <span class="dp-order-info-icon">ⓘ</span>';
-    
+
     buttonsDiv.appendChild(checkButton);
     buttonsDiv.appendChild(resetButton);
     controlsDiv.appendChild(buttonsDiv);
     controlsDiv.appendChild(timerDiv);
-    
+
     container.appendChild(controlsDiv);
 }
 
 function initializeDragAndDrop(orderList) {
     const items = orderList.querySelectorAll('li');
-    
+
     items.forEach(item => {
         item.draggable = true;
         item.addEventListener('dragstart', handleDragStart);
@@ -320,10 +320,10 @@ function handleDragOver(e) {
 function handleDrop(e) {
     e.preventDefault();
     if (e.target === draggedElement) return;
-    
+
     const orderList = e.target.closest('.dp-order');
     const afterElement = getDragAfterElement(orderList, e.clientY);
-    
+
     if (afterElement == null) {
         orderList.appendChild(draggedElement);
     } else {
@@ -338,11 +338,11 @@ function handleDragEnd(e) {
 
 function getDragAfterElement(container, y) {
     const draggableElements = [...container.querySelectorAll('li:not(.dragging)')];
-    
+
     return draggableElements.reduce((closest, child) => {
         const box = child.getBoundingClientRect();
         const offset = y - box.top - box.height / 2;
-        
+
         if (offset < 0 && offset > closest.offset) {
             return { offset: offset, element: child };
         } else {
@@ -354,7 +354,7 @@ function getDragAfterElement(container, y) {
 function checkOrder(orderList, originalItems) {
     const currentOrder = Array.from(orderList.children).map(li => li.textContent.trim());
     const isCorrect = JSON.stringify(currentOrder) === JSON.stringify(originalItems);
-    
+
     if (isCorrect) {
         alert('Correct! Well done.');
     } else {
@@ -365,7 +365,7 @@ function checkOrder(orderList, originalItems) {
 function resetOrder(orderList, originalItems) {
     // Clear current items
     orderList.innerHTML = '';
-    
+
     // Restore original order
     originalItems.forEach(itemText => {
         const li = document.createElement('li');
@@ -377,7 +377,7 @@ function resetOrder(orderList, originalItems) {
         li.addEventListener('dragend', handleDragEnd);
         orderList.appendChild(li);
     });
-    
+
     // Reset timer
     const container = orderList.closest('.dp-order-wrapper');
     resetTimer(container);
@@ -386,7 +386,7 @@ function resetOrder(orderList, originalItems) {
 function startTimer(container) {
     const timerDisplay = container.querySelector('.timer-display');
     if (!timerDisplay) return;
-    
+
     let seconds = 0;
     const timerInterval = setInterval(() => {
         seconds++;
@@ -394,7 +394,7 @@ function startTimer(container) {
         const remainingSeconds = seconds % 60;
         timerDisplay.textContent = `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     }, 1000);
-    
+
     // Store interval reference for reset functionality
     container.timerInterval = timerInterval;
 }
@@ -404,4 +404,17 @@ function resetTimer(container) {
         clearInterval(container.timerInterval);
     }
     startTimer(container);
+}
+
+// =========================================
+// MATCH ITEMS FUNCTIONALITY
+// =========================================
+
+/**
+ * Initialize Match Items functionality
+ * Drag and drop matching activities with CidiLabs classes
+ */
+function initializeMatchItems() {
+    // Match Items functionality will be implemented here
+    console.log('Match Items functionality ready for implementation');
 }

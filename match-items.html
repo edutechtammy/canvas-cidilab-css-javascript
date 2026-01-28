@@ -1,3 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CidiLabs Match Items - Local Testing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="cidilabs-styles.css">
+</head>
+<body>
+    <div class="container" style="max-width: 1200px; margin: 20px auto; padding: 20px;">
+        <a href="index.html" class="back-to-index">← Back to Index</a>
+        <h1>CidiLabs Match Items Test</h1>
+        <p>Testing the Match Items component locally before deploying to Canvas.</p>
+        
+        <!-- CidiLabs Match Items: Drag and drop matching activities designed to enhance engagement through interactive pairing exercises within the Canvas Learning Management System.
+
+Key Features and Benefits
+-- Interactivity: Improves learning through active participation in matching related concepts.
+-- Accessibility: Fully accessible to all users, including keyboard navigation support.
+-- Customization: Supports text content and can be configured for various matching activities like vocabulary pairs, concept relationships, or classification exercises.
+-- DesignPLUS Integration: Part of the Design Tools for Canvas, allowing for easy creation without needing to know HTML.
+-- Visual Feedback: Provides immediate feedback when items are successfully matched with visual indicators.
+
+Usage in Canvas
+Functionality: Students click on items in the "Items to Match" area. When two items form a correct pair, they receive visual confirmation and are moved to the "Matched Items" section.
+Scoring: Tracks completion progress and can display final scores with reset functionality.
+Placement: Can be added to pages, assignments, or discussions within Canvas.
+
+The base match items template has been adapted with:
+-- TSTC branding colors (Texas Blue background with red borders)
+-- Enhanced visual hierarchy with proper icon integration
+-- Responsive design for various screen sizes
+-->
+
+        <!-- BEGIN COPY-PASTE - THIS PORTION IS THE ACTUAL TEMPLATE. DO NOT CHANGE OR ADD TO THE TEMPLATE -->
+
 <!-- 
  This is in beta, so there is not a lot of information on it. Exploration of the template in active use shows that students click on the items in the Items to Match part fo the interface. If the two arw a pair, then they get a brief checkmark and are added to the Matched Items section under the selection box. Then the two go grey and the student can match two other pairs. Once all of them are paired, then the scoring box shifts to show the score and a reset button. I think this section is fully controlled by Cidilabs Javascript.
 
@@ -6,7 +47,7 @@
 -->
 
 <div class="dp-match-items dp-match-pairing dp-si-rounded dp-si-outline" style="background-color: #1d2757; padding: 20px; border-radius: 10px; border: 2px solid #d13138;">
-        <h3 class="dp-has-icon" style="color: white;"><i class="fas fa-object-ungroup"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i> Match Items</h3>
+        <h4 class="dp-has-icon" style="color: white;"><i class="fas fa-object-ungroup"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i> Match Items</h4>
         <p class="dp-match-instructions" style="color: white; border: none; background: transparent;">Select each set of two matching items.</p>
         <div class="dp-unmatched-items">
             <h4 class="dp-has-icon unmatched-items-header"><i class="fas fa-search"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i> Items to Match</h4>
@@ -21,3 +62,10 @@
         </div>
     </div>
     <p>&nbsp;</p>
+
+        <!-- END COPY-PASTE -->
+
+    </div>
+    <script src="cidilabs-scripts.js"></script>
+</body>
+</html>
