@@ -1049,3 +1049,830 @@ body {
     font-size: 12px;
     font-weight: 500;
 }
+
+/* ===========================================
+   SELECT ALL COMPONENT STYLES
+   =========================================== */
+
+/* Main container for Select All activity */
+.dp-si-sa {
+    position: relative;
+    border-radius: 10px;
+}
+
+/* Header and instruction text styling */
+.dp-si-sa h4 {
+    margin: 0 0 15px 0;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.dp-si-sa p {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+/* Icon styling for Select All */
+.dp-si-sa .dp-has-icon .fas.fa-mouse-pointer {
+    color: white;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+/* Selectable items list container */
+.dp-sa-list {
+    list-style: none;
+    margin: 0;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    border-radius: 8px;
+}
+
+/* Individual selectable items */
+.dp-sa-list li {
+    background-color: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+    position: relative;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover state for selectable items */
+.dp-sa-list li:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Selected state for items */
+.dp-sa-list li.selected {
+    background-color: #cce5ff;
+    border-color: #007bff;
+    color: #004085;
+}
+
+/* Correct items when revealed/checked */
+.dp-sa-list li.dp-sa-correct.revealed {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+}
+
+/* Checkmark for correct selections */
+.dp-sa-list li.dp-sa-correct.revealed::after {
+    content: "✓";
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    color: #28a745;
+    font-weight: bold;
+    font-size: 18px;
+    background: white;
+    border: 2px solid #28a745;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* Incorrect selections */
+.dp-sa-list li.incorrect {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+}
+
+/* X mark for incorrect selections */
+.dp-sa-list li.incorrect::after {
+    content: "✗";
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    color: #dc3545;
+    font-weight: bold;
+    font-size: 16px;
+    background: white;
+    border: 2px solid #dc3545;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 768px) {
+    .dp-sa-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .dp-sa-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Control Panel Section */
+.dp-sa-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid #dee2e6;
+    transition: background-color 0.3s ease;
+}
+
+/* Success state for control panel */
+.dp-sa-controls.success {
+    background-color: #d4edda;
+    border-color: #28a745;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dp-sa-controls.success .dp-sa-check {
+    display: none;
+}
+
+.dp-sa-controls.success .dp-sa-score {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dp-sa-controls.success .dp-sa-timer {
+    margin-left: auto;
+}
+
+.dp-sa-controls-left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Control buttons styling */
+.dp-sa-check,
+.dp-sa-reset {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dp-sa-check {
+    background-color: #1d2757;
+    color: white;
+}
+
+.dp-sa-check:hover {
+    background-color: #14193e;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dp-sa-reset {
+    background-color: #6c757d;
+    color: white;
+}
+
+.dp-sa-reset:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Timer section */
+.dp-sa-timer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #495057;
+    font-weight: 500;
+}
+
+.dp-sa-timer-display {
+    background-color: #343a40;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 13px;
+    min-width: 45px;
+    text-align: center;
+}
+
+.dp-sa-info-icon {
+    cursor: help;
+    opacity: 0.6;
+    color: #6c757d;
+    font-size: 12px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dee2e6;
+}
+
+/* Score display for success state */
+.dp-sa-score {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #155724;
+    font-size: 16px;
+}
+
+.dp-sa-controls.success .dp-sa-score {
+    display: flex;
+}
+
+.dp-sa-score-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #155724;
+}
+
+/* Responsive design for control panel */
+@media (max-width: 768px) {
+    .dp-sa-controls {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+        padding: 12px 16px;
+    }
+
+    .dp-sa-controls-left {
+        justify-content: center;
+        order: 1;
+    }
+
+    .dp-sa-timer {
+        justify-content: center;
+        order: 2;
+    }
+}
+
+/* Control Panel Section */
+.dp-sa-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid #dee2e6;
+    transition: background-color 0.3s ease;
+}
+
+/* Success state for control panel */
+.dp-sa-controls.success {
+    background-color: #d4f4dd;
+    border-color: #28a745;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.dp-sa-controls.success .dp-sa-check {
+    display: none;
+}
+
+.dp-sa-controls-left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Control buttons styling */
+.dp-sa-check,
+.dp-sa-reset {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dp-sa-check {
+    background-color: #1d2757;
+    color: white;
+}
+
+.dp-sa-check:hover {
+    background-color: #14193e;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dp-sa-reset {
+    background-color: #6c757d;
+    color: white;
+}
+
+.dp-sa-reset:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Timer section */
+.dp-sa-timer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #495057;
+    font-weight: 500;
+}
+
+.dp-sa-timer-display {
+    background-color: #343a40;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 13px;
+    min-width: 45px;
+    text-align: center;
+}
+
+.dp-sa-info-icon {
+    cursor: help;
+    opacity: 0.6;
+    color: #6c757d;
+    font-size: 12px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dee2e6;
+}
+
+/* Score display for success state */
+.dp-sa-score {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #155724;
+    font-size: 16px;
+}
+
+.dp-sa-controls.success .dp-sa-score {
+    display: flex;
+}
+
+.dp-sa-score-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #155724;
+}
+
+/* Responsive design for control panel */
+@media (max-width: 768px) {
+    .dp-sa-controls {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+        padding: 12px 16px;
+    }
+
+    .dp-sa-controls-left {
+        justify-content: center;
+        order: 1;
+    }
+
+    .dp-sa-timer {
+        justify-content: center;
+        order: 2;
+    }
+}
+
+/* Additional Select All score bar styling */
+.dp-sa-score-bar {
+    background-color: #28a745;
+    height: 8px;
+    border-radius: 4px;
+    width: 80px;
+    position: relative;
+}
+
+/* ===========================================
+   SORT ITEMS COMPONENT STYLES
+   =========================================== */
+
+/* Main sort items container */
+.dp-si-sort-pool {
+    position: relative;
+    border-radius: 10px;
+}
+
+/* Header and instruction text styling */
+.dp-si-sort-pool h3 {
+    margin: 0 0 15px 0;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.dp-si-sort-pool p {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+/* Icon styling for Sort Items */
+.dp-si-sort-pool .dp-has-icon .fas.fa-exchange-alt {
+    color: white;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+/* Sort content container */
+.dp-si-sort-content {
+    margin-top: 15px;
+}
+
+/* Answer Bank and Bucket styling with white backgrounds */
+.dp-si-sort-bucket {
+    background-color: white !important;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+/* Bucket content area */
+.dp-si-sort-bucket-content {
+    padding: 15px;
+}
+
+/* Bucket headers */
+.dp-si-sort-bucket-header {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Answer Bank specific styling */
+.dp-si-sort-answer-bank {
+    margin-bottom: 20px;
+}
+
+/* Lists inside buckets */
+.dp-si-sort-bucket ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Individual sortable items */
+.dp-si-item-text {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: move;
+    user-select: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.dp-si-item-text:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dragging state */
+.dp-si-item-text.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+/* Bootstrap grid adjustments for sort items */
+.dp-si-sort-pool .row {
+    margin: 0;
+    gap: 15px;
+}
+
+.dp-si-sort-pool .col-md-6 {
+    padding-left: 8px;
+    padding-right: 8px;
+    flex: 1;
+    max-width: calc(50% - 7.5px);
+}
+
+/* Ensure buckets are evenly distributed */
+.dp-si-sort-pool .container-fluid {
+    padding: 0;
+}
+
+/* Better spacing for bucket containers */
+.dp-si-sort-bucket:not(.dp-si-sort-answer-bank) {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Make sure bucket content fills available space */
+.dp-si-sort-bucket:not(.dp-si-sort-answer-bank) .dp-si-sort-bucket-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Allow bucket lists to grow */
+.dp-si-sort-bucket:not(.dp-si-sort-answer-bank) ul {
+    flex: 1;
+    align-content: flex-start;
+}
+
+/* Drag and drop visual feedback */
+.dp-si-sort-bucket.drag-over {
+    background-color: #f0f8ff !important;
+    border-color: #007bff !important;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3) !important;
+}
+
+/* Ensure Answer Bank is easily distinguishable */
+.dp-si-sort-answer-bank {
+    border-width: 3px !important;
+}
+
+/* Dragging state visual feedback */
+.dp-si-item-text.dragging {
+    opacity: 0.6;
+    transform: scale(0.95);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ===========================================
+   SORT ITEMS CONTROL PANEL STYLES
+   =========================================== */
+
+/* Main control panel container */
+.sort-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid #dee2e6;
+    gap: 20px;
+}
+
+/* Left side controls */
+.sort-controls-left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Control buttons styling */
+.sort-controls .btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sort-controls .btn-sort-check {
+    background-color: #1d2757;
+    color: white;
+}
+
+.sort-controls .btn-sort-check:hover {
+    background-color: #14193e;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sort-controls .btn-sort-shuffle {
+    background-color: #6c757d;
+    color: white;
+}
+
+.sort-controls .btn-sort-shuffle:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sort-controls .btn-sort-reset {
+    background-color: #6c757d;
+    color: white;
+}
+
+.sort-controls .btn-sort-reset:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Timer section */
+.sort-timer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #495057;
+    font-weight: 500;
+}
+
+.sort-timer-display {
+    background-color: #343a40;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 13px;
+    min-width: 45px;
+    text-align: center;
+}
+
+.sort-info-icon {
+    cursor: help;
+    opacity: 0.6;
+    color: #6c757d;
+    font-size: 12px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dee2e6;
+}
+
+/* Responsive design for control panel */
+@media (max-width: 768px) {
+    .sort-controls {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+        padding: 12px 16px;
+    }
+
+    .sort-controls-left {
+        justify-content: center;
+        order: 1;
+    }
+
+    .sort-timer {
+        justify-content: center;
+        order: 2;
+    }
+}
+
+/* ===========================================
+   SORT ITEMS SUCCESS STATE STYLES
+   =========================================== */
+
+/* Success state control panel - matches Canvas green success panel */
+.sort-controls.sort-success {
+    background-color: #d4f4dd !important;
+    border-color: #28a745 !important;
+}
+
+/* Ensure success state layout is maintained */
+.sort-controls.sort-success .sort-controls-left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Success state Reset button styling */
+.sort-controls.sort-success .btn-sort-reset {
+    background-color: #1d2757;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sort-controls.sort-success .btn-sort-reset:hover {
+    background-color: #14193e;
+}
+
+/* Success state items with checkmarks */
+.dp-si-item-text.sort-success-item {
+    background-color: #d4edda !important;
+    border-color: #28a745 !important;
+    color: #155724 !important;
+    position: relative;
+}
+
+.success-checkmark {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+/* Score display in success state */
+.sort-score-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #155724;
+    font-size: 16px;
+}
+
+.sort-score-bar {
+    background-color: #28a745;
+    height: 8px;
+    border-radius: 4px;
+    width: 100px;
+    position: relative;
+}
+
+.sort-score-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #155724;
+}
+
+/* Success state timer styling */
+.sort-controls.sort-success .sort-timer {
+    color: #495057;
+    font-weight: 500;
+}
+
+.sort-controls.sort-success .sort-timer-display {
+    background-color: #343a40;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 13px;
+    min-width: 45px;
+    text-align: center;
+}

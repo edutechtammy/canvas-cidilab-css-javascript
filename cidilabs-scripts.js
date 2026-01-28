@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeModals();
     initializeOrderItems();
     initializeMatchItems();
+    initializeSelectAll();
+    initializeSortItems();
 });
 
 // =========================================
@@ -785,4 +787,661 @@ function randomizeItems(container) {
     items.forEach(item => {
         itemContainer.appendChild(item);
     });
+}
+
+// =========================================
+// SELECT ALL COMPONENT FUNCTIONALITY
+// =========================================
+
+/**
+ * Initialize Select All functionality
+ */
+function initializeSelectAll() {
+    const selectAllContainers = document.querySelectorAll('.dp-si-sa');
+
+    selectAllContainers.forEach(container => {
+        const itemsList = container.querySelector('.dp-sa-list');
+        if (!itemsList) return;
+
+        // Randomize the order of answer items
+        randomizeSelectAllItems(container);
+
+        // Create and insert control panel after the main container
+        const controlPanel = createSelectAllControlPanel();
+        container.parentNode.insertBefore(controlPanel, container.nextSibling);
+
+        // Store reference to control panel for this container
+        container.controlPanel = controlPanel;
+
+        const items = itemsList.querySelectorAll('li');
+
+        // Initialize timer
+        let startTime = Date.now();
+        let timerInterval = setInterval(() => {
+            updateSelectAllTimer(controlPanel, startTime);
+        }, 1000);
+
+        // Store timer reference for cleanup
+        container.timerInterval = timerInterval;
+
+        // Add click handlers to each selectable item
+        items.forEach(item => {
+            item.addEventListener('click', function () {
+                toggleItemSelection(item);
+            });
+
+            // Add keyboard support
+            item.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleItemSelection(item);
+                }
+            });
+
+            // Make items focusable for accessibility
+            item.setAttribute('tabindex', '0');
+            item.setAttribute('role', 'checkbox');
+            item.setAttribute('aria-checked', 'false');
+        });
+
+        // Add event handlers for control buttons
+        const checkButton = controlPanel.querySelector('.dp-sa-check');
+        const resetButton = controlPanel.querySelector('.dp-sa-reset');
+
+        checkButton.addEventListener('click', () => checkSelectAllAnswers(container));
+        resetButton.addEventListener('click', () => resetSelectAll(container));
+    });
+}
+
+/**
+ * Toggle selection state of an item
+ * @param {HTMLElement} item - The item to toggle
+ */
+function toggleItemSelection(item) {
+    if (item.classList.contains('revealed')) {
+        return; // Don't allow changes after checking answers
+    }
+
+    const isSelected = item.classList.contains('selected');
+
+    if (isSelected) {
+        item.classList.remove('selected');
+        item.setAttribute('aria-checked', 'false');
+    } else {
+        item.classList.add('selected');
+        item.setAttribute('aria-checked', 'true');
+    }
+}
+
+/**
+ * Create control panel for Select All component
+ * @returns {HTMLElement} The control panel element
+ */
+function createSelectAllControlPanel() {
+    const controlPanel = document.createElement('div');
+    controlPanel.className = 'dp-sa-controls';
+
+    controlPanel.innerHTML = `
+        <div class="dp-sa-controls-left">
+            <button class="dp-sa-check"><i class="fas fa-check"></i> Check</button>
+            <button class="dp-sa-reset"><i class="fas fa-undo"></i> Reset</button>
+        </div>
+        <div class="dp-sa-score">
+            <span>Score</span>
+            <div class="dp-sa-score-bar"></div>
+            <span class="dp-sa-score-text">3/3</span>
+        </div>
+        <div class="dp-sa-timer">
+            <span>Time</span>
+            <span class="dp-sa-timer-display">0:00</span>
+            <i class="dp-sa-info-icon fas fa-info-circle"></i>
+        </div>
+    `;
+
+    return controlPanel;
+}
+
+/**
+ * Update timer display
+ * @param {HTMLElement} controlPanel - The control panel element
+ * @param {number} startTime - The start time timestamp
+ */
+function updateSelectAllTimer(controlPanel, startTime) {
+    const timerDisplay = controlPanel.querySelector('.dp-sa-timer-display');
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+
+    timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+/**
+ * Check Select All answers
+ * @param {HTMLElement} container - The main Select All container
+ */
+function checkSelectAllAnswers(container) {
+    const items = container.querySelectorAll('.dp-sa-list li');
+    const correctItems = container.querySelectorAll('.dp-sa-list li.dp-sa-correct');
+
+    let correctSelections = 0;
+    let totalCorrect = correctItems.length;
+
+    // Mark all items as revealed and check answers
+    items.forEach(item => {
+        item.classList.add('revealed');
+
+        const isCorrect = item.classList.contains('dp-sa-correct');
+        const isSelected = item.classList.contains('selected');
+
+        if (isCorrect && isSelected) {
+            correctSelections++;
+        } else if (!isCorrect && isSelected) {
+            item.classList.add('incorrect');
+        }
+    });
+
+    // Update control panel to success state
+    const controlPanel = container.controlPanel;
+    controlPanel.classList.add('success');
+
+    // Update score display in Canvas format
+    const scoreText = controlPanel.querySelector('.dp-sa-score-text');
+    scoreText.textContent = `${correctSelections}/${totalCorrect}`;
+
+    // Stop timer
+    if (container.timerInterval) {
+        clearInterval(container.timerInterval);
+    }
+}
+
+/**
+ * Reset Select All component
+ * @param {HTMLElement} container - The main Select All container
+ */
+function resetSelectAll(container) {
+    const items = container.querySelectorAll('.dp-sa-list li');
+    const controlPanel = container.controlPanel;
+
+    // Reset all items
+    items.forEach(item => {
+        item.classList.remove('selected', 'revealed', 'incorrect');
+        item.setAttribute('aria-checked', 'false');
+    });
+
+    // Reset control panel
+    controlPanel.classList.remove('success');
+
+    // Randomize items again for new attempt
+    randomizeSelectAllItems(container);
+
+    // Restart timer
+    if (container.timerInterval) {
+        clearInterval(container.timerInterval);
+    }
+
+    const startTime = Date.now();
+    container.timerInterval = setInterval(() => {
+        updateSelectAllTimer(controlPanel, startTime);
+    }, 1000);
+}
+
+/**
+ * Randomize the order of Select All items
+ * @param {HTMLElement} container - The main Select All container
+ */
+function randomizeSelectAllItems(container) {
+    const itemsList = container.querySelector('.dp-sa-list');
+    const items = Array.from(itemsList.querySelectorAll('li'));
+
+    // Fisher-Yates shuffle algorithm
+    for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+    }
+
+    // Clear the container and append items in new order
+    itemsList.innerHTML = '';
+    items.forEach(item => {
+        itemsList.appendChild(item);
+    });
+}
+
+// =========================================
+// SORT ITEMS FUNCTIONALITY
+// =========================================
+
+/**
+ * Initialize Sort Items functionality
+ */
+function initializeSortItems() {
+    const sortContainers = document.querySelectorAll('.dp-si-sort-pool');
+
+    sortContainers.forEach(container => {
+        // Get the Answer Bank and all buckets
+        const answerBank = container.querySelector('.dp-si-sort-answer-bank ul');
+        const allBuckets = container.querySelectorAll('.dp-si-sort-bucket:not(.dp-si-sort-answer-bank)');
+
+        if (!answerBank) return;
+
+        // Collect all items from all buckets and move them to Answer Bank
+        const allItems = [];
+
+        // First, collect items that might be in other buckets
+        allBuckets.forEach(bucket => {
+            const bucketList = bucket.querySelector('ul');
+            if (bucketList) {
+                const items = Array.from(bucketList.querySelectorAll('.dp-si-item-text'));
+                items.forEach(item => {
+                    allItems.push(item);
+                    bucketList.removeChild(item);
+                });
+            }
+        });
+
+        // Also collect items already in Answer Bank to randomize them
+        const answerBankItems = Array.from(answerBank.querySelectorAll('.dp-si-item-text'));
+        answerBankItems.forEach(item => {
+            allItems.push(item);
+        });
+
+        // Clear Answer Bank
+        answerBank.innerHTML = '';
+
+        // Randomize all items using Fisher-Yates shuffle
+        for (let i = allItems.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
+        }
+
+        // Add all items back to Answer Bank
+        allItems.forEach(item => {
+            answerBank.appendChild(item);
+        });
+
+        // Create control panel
+        createSortControlPanel(container);
+
+        // Initialize drag and drop functionality
+        initializeSortDragAndDrop(container);
+
+        // Initialize timer
+        initializeSortTimer(container);
+
+        console.log('Sort Items component initialized with', allItems.length, 'items in Answer Bank');
+    });
+}
+
+/**
+ * Initialize drag and drop functionality for Sort Items
+ * @param {HTMLElement} container - The main sort items container
+ */
+function initializeSortDragAndDrop(container) {
+    const allBuckets = container.querySelectorAll('.dp-si-sort-bucket ul');
+
+    allBuckets.forEach(bucket => {
+        // Make buckets drop zones
+        bucket.addEventListener('dragover', handleSortDragOver);
+        bucket.addEventListener('drop', handleSortDrop);
+        bucket.addEventListener('dragenter', handleSortDragEnter);
+        bucket.addEventListener('dragleave', handleSortDragLeave);
+    });
+
+    // Make items draggable
+    updateSortItemsDraggable(container);
+}
+
+/**
+ * Update all items in the container to be draggable
+ * @param {HTMLElement} container - The main sort items container
+ */
+function updateSortItemsDraggable(container) {
+    const items = container.querySelectorAll('.dp-si-item-text');
+
+    items.forEach(item => {
+        item.draggable = true;
+        item.addEventListener('dragstart', handleSortDragStart);
+        item.addEventListener('dragend', handleSortDragEnd);
+    });
+}
+
+let sortDraggedElement = null;
+
+/**
+ * Handle drag start for sort items
+ * @param {Event} e - The drag event
+ */
+function handleSortDragStart(e) {
+    sortDraggedElement = e.target;
+    e.target.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', e.target.outerHTML);
+}
+
+/**
+ * Handle drag end for sort items
+ * @param {Event} e - The drag event
+ */
+function handleSortDragEnd(e) {
+    e.target.classList.remove('dragging');
+    sortDraggedElement = null;
+
+    // Remove drag-over classes from all buckets
+    const container = e.target.closest('.dp-si-sort-pool');
+    if (container) {
+        container.querySelectorAll('.dp-si-sort-bucket').forEach(bucket => {
+            bucket.classList.remove('drag-over');
+        });
+    }
+}
+
+/**
+ * Handle drag over for sort buckets
+ * @param {Event} e - The drag event
+ */
+function handleSortDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+}
+
+/**
+ * Handle drag enter for sort buckets
+ * @param {Event} e - The drag event
+ */
+function handleSortDragEnter(e) {
+    e.preventDefault();
+    const bucket = e.target.closest('.dp-si-sort-bucket');
+    if (bucket) {
+        bucket.classList.add('drag-over');
+    }
+}
+
+/**
+ * Handle drag leave for sort buckets
+ * @param {Event} e - The drag event
+ */
+function handleSortDragLeave(e) {
+    const bucket = e.target.closest('.dp-si-sort-bucket');
+    if (bucket && !bucket.contains(e.relatedTarget)) {
+        bucket.classList.remove('drag-over');
+    }
+}
+
+/**
+ * Handle drop for sort buckets
+ * @param {Event} e - The drag event
+ */
+function handleSortDrop(e) {
+    e.preventDefault();
+
+    if (!sortDraggedElement) return;
+
+    const dropTarget = e.target.closest('.dp-si-sort-bucket ul');
+    if (dropTarget && dropTarget !== sortDraggedElement.parentNode) {
+        dropTarget.appendChild(sortDraggedElement);
+    }
+
+    // Remove drag-over visual feedback
+    const bucket = e.target.closest('.dp-si-sort-bucket');
+    if (bucket) {
+        bucket.classList.remove('drag-over');
+    }
+}
+
+/**
+ * Create control panel for Sort Items component
+ * @param {HTMLElement} container - The main sort items container
+ */
+function createSortControlPanel(container) {
+    if (!container.querySelector('.sort-controls')) {
+        const controlPanel = document.createElement('div');
+        controlPanel.className = 'sort-controls';
+        controlPanel.innerHTML = `
+            <div class="sort-controls-left">
+                <button class="btn btn-sort-check"><i class="fas fa-check"></i> Check</button>
+                <button class="btn btn-sort-shuffle"><i class="fas fa-random"></i> Shuffle</button>
+                <button class="btn btn-sort-reset"><i class="fas fa-undo"></i> Reset</button>
+            </div>
+            <div class="sort-timer">
+                <span>Time</span>
+                <span class="sort-timer-display">0:00</span>
+                <i class="fas fa-info-circle sort-info-icon"></i>
+            </div>
+        `;
+
+        // Insert control panel after the main container
+        container.parentNode.insertBefore(controlPanel, container.nextSibling);
+
+        // Add event listeners to buttons
+        setupSortControlHandlers(container, controlPanel);
+    }
+}
+
+/**
+ * Setup event handlers for Sort Items control buttons
+ * @param {HTMLElement} container - The main sort items container
+ * @param {HTMLElement} controlPanel - The control panel element
+ */
+function setupSortControlHandlers(container, controlPanel) {
+    const checkBtn = controlPanel.querySelector('.btn-sort-check');
+    const shuffleBtn = controlPanel.querySelector('.btn-sort-shuffle');
+    const resetBtn = controlPanel.querySelector('.btn-sort-reset');
+
+    checkBtn.addEventListener('click', () => checkSortResults(container));
+    shuffleBtn.addEventListener('click', () => shuffleSortItems(container));
+    resetBtn.addEventListener('click', () => resetSortItems(container));
+}
+
+/**
+ * Initialize timer for Sort Items component
+ * @param {HTMLElement} container - The main sort items container
+ */
+function initializeSortTimer(container) {
+    const controlPanel = container.parentNode.querySelector('.sort-controls');
+    if (!controlPanel) return;
+
+    const timerDisplay = controlPanel.querySelector('.sort-timer-display');
+    if (!timerDisplay) return;
+
+    let startTime = Date.now();
+    const timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+
+    // Store timer reference for cleanup
+    container.sortTimerInterval = timerInterval;
+    container.sortStartTime = startTime;
+}
+
+/**
+ * Check Sort Items results
+ * @param {HTMLElement} container - The main sort items container
+ */
+function checkSortResults(container) {
+    const answerBank = container.querySelector('.dp-si-sort-answer-bank ul');
+    const allBuckets = container.querySelectorAll('.dp-si-sort-bucket:not(.dp-si-sort-answer-bank) ul');
+
+    const answerBankItems = answerBank.querySelectorAll('.dp-si-item-text');
+    let totalItemsInBuckets = 0;
+    let expectedItemsInBuckets = 0;
+
+    // Count expected items by looking at the template structure
+    // and count actual items in buckets
+    allBuckets.forEach(bucket => {
+        const bucketItems = bucket.querySelectorAll('.dp-si-item-text');
+        totalItemsInBuckets += bucketItems.length;
+
+        // Count expected items by looking at the original template
+        // In this case, we know Bucket 1 should have 2 items, Bucket 2 should have 2 items
+        expectedItemsInBuckets += 2; // Each bucket should have 2 items based on template
+
+        // Add checkmarks to items in buckets
+        bucketItems.forEach(item => {
+            if (!item.querySelector('.success-checkmark')) {
+                const checkmark = document.createElement('span');
+                checkmark.className = 'success-checkmark';
+                checkmark.innerHTML = ' ✓';
+                item.appendChild(checkmark);
+                item.classList.add('sort-success-item');
+            }
+        });
+    });
+
+    // Total items is the sum of items in Answer Bank + items in buckets
+    const totalItems = answerBankItems.length + totalItemsInBuckets;
+
+    // Success condition: Are there the expected number of items in buckets?
+    if (totalItemsInBuckets >= expectedItemsInBuckets) {
+        // Success state - expected items are in buckets
+        showSortSuccess(container, totalItemsInBuckets, totalItems);
+    } else {
+        // Show current progress
+        alert(`Items sorted: ${totalItemsInBuckets}/${totalItems}\nRemaining in Answer Bank: ${answerBankItems.length}`);
+    }
+}
+
+/**
+ * Show Sort Items success state
+ * @param {HTMLElement} container - The main sort items container
+ * @param {number} sortedItems - Number of sorted items
+ * @param {number} totalItems - Total number of items
+ */
+function showSortSuccess(container, sortedItems, totalItems) {
+    const controlPanel = container.parentNode.querySelector('.sort-controls');
+
+    // Stop timer
+    if (container.sortTimerInterval) {
+        clearInterval(container.sortTimerInterval);
+    }
+
+    // Switch to success state
+    controlPanel.classList.add('sort-success');
+
+    // Transform the entire control panel for success state
+    controlPanel.innerHTML = `
+        <div class="sort-controls-left">
+            <button class="btn btn-sort-reset"><i class="fas fa-undo"></i> Reset</button>
+            <div class="sort-score-display">
+                <span>Score</span>
+                <div class="sort-score-bar"></div>
+                <span class="sort-score-text">${sortedItems}/${totalItems}</span>
+            </div>
+        </div>
+        <div class="sort-timer">
+            <span>Time</span>
+            <span class="sort-timer-display">${getFormattedTime(container)}</span>
+            <i class="fas fa-info-circle sort-info-icon"></i>
+        </div>
+    `;
+
+    // Re-attach reset event listener
+    const newResetBtn = controlPanel.querySelector('.btn-sort-reset');
+    newResetBtn.addEventListener('click', () => resetSortItems(container));
+
+    console.log('Sort Items success state activated');
+}
+
+/**
+ * Get formatted time from container
+ * @param {HTMLElement} container - The main sort items container
+ * @returns {string} Formatted time string
+ */
+function getFormattedTime(container) {
+    if (container.sortStartTime) {
+        const elapsed = Math.floor((Date.now() - container.sortStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+    return '0:00';
+}/**
+ * Shuffle items in Answer Bank
+ * @param {HTMLElement} container - The main sort items container
+ */
+function shuffleSortItems(container) {
+    const answerBank = container.querySelector('.dp-si-sort-answer-bank ul');
+    const items = Array.from(answerBank.querySelectorAll('.dp-si-item-text'));
+
+    // Fisher-Yates shuffle algorithm
+    for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+    }
+
+    // Clear and re-append shuffled items
+    answerBank.innerHTML = '';
+    items.forEach(item => {
+        answerBank.appendChild(item);
+    });
+}
+
+/**
+ * Reset Sort Items to initial state
+ * @param {HTMLElement} container - The main sort items container
+ */
+function resetSortItems(container) {
+    const answerBank = container.querySelector('.dp-si-sort-answer-bank ul');
+    const allBuckets = container.querySelectorAll('.dp-si-sort-bucket:not(.dp-si-sort-answer-bank) ul');
+    const controlPanel = container.parentNode.querySelector('.sort-controls');
+
+    // Clear success state
+    controlPanel.classList.remove('sort-success');
+
+    // Restore original control panel
+    const leftControls = controlPanel.querySelector('.sort-controls-left');
+    leftControls.innerHTML = `
+        <button class="btn btn-sort-check"><i class="fas fa-check"></i> Check</button>
+        <button class="btn btn-sort-shuffle"><i class="fas fa-random"></i> Shuffle</button>
+        <button class="btn btn-sort-reset"><i class="fas fa-undo"></i> Reset</button>
+    `;
+
+    // Re-attach all event listeners
+    setupSortControlHandlers(container, controlPanel);
+
+    // Collect all items from buckets back to Answer Bank
+    const allItems = [];
+
+    // Collect items from all buckets and remove checkmarks
+    allBuckets.forEach(bucket => {
+        const items = Array.from(bucket.querySelectorAll('.dp-si-item-text'));
+        items.forEach(item => {
+            // Remove success styling and checkmarks
+            item.classList.remove('sort-success-item');
+            const checkmark = item.querySelector('.success-checkmark');
+            if (checkmark) {
+                checkmark.remove();
+            }
+
+            allItems.push(item);
+            bucket.removeChild(item);
+        });
+    });
+
+    // Also collect items already in Answer Bank
+    const answerBankItems = Array.from(answerBank.querySelectorAll('.dp-si-item-text'));
+    answerBankItems.forEach(item => {
+        allItems.push(item);
+    });
+
+    // Clear Answer Bank
+    answerBank.innerHTML = '';
+
+    // Randomize all items
+    for (let i = allItems.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
+    }
+
+    // Add all items back to Answer Bank
+    allItems.forEach(item => {
+        answerBank.appendChild(item);
+    });
+
+    // Reset timer
+    if (container.sortTimerInterval) {
+        clearInterval(container.sortTimerInterval);
+    }
+    initializeSortTimer(container);
 }
