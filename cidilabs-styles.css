@@ -33,6 +33,20 @@ h4 {
     font-size: 1.5rem;
 }
 
+/* Fix for h4 elements with dp-has-icon class - use flex instead of inline-block */
+h4.dp-has-icon {
+    display: flex;
+    justify-content: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+/* Disable any ::before pseudo-elements for h4 with dp-has-icon - use real FontAwesome icons instead */
+h4.dp-has-icon::before {
+    display: none !important;
+    content: none !important;
+}
+
 /* Override for flipcards - they have custom positioning */
 .dp-flip-card .dp-has-icon .fas,
 .dp-flip-card .dp-has-icon .fa,
@@ -532,6 +546,7 @@ body {
 .dp-order-wrapper {
     position: relative;
     display: block;
+    border-radius: 10px 10px 0 0 !important;
 }
 
 .dp-order-wrapper h4 {
@@ -590,6 +605,30 @@ body {
     position: relative;
 }
 
+.dp-order.dp-order-text li.correct {
+    border-color: #28a745;
+}
+
+.dp-order.dp-order-text li.correct::after {
+    content: "✓";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #28a745;
+    font-weight: bold;
+    font-size: 18px;
+    background: white;
+    border: 2px solid #28a745;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
 .dp-order.dp-order-text li:hover {
     background: #f8f9fa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -604,23 +643,96 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
-    padding: 0 20px;
+    margin-top: 0;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-radius: 0 0 10px 10px;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    width: 100%;
+    max-width: none;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+/* Success state for control panel */
+.dp-order-controls.success {
+    background-color: #d4f4dd;
+    border-color: #28a745;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.dp-order-controls.success .dp-order-check {
+    display: none;
+}
+
+.dp-order-controls.success .dp-order-controls-left {
+    justify-content: flex-start;
+    flex: none;
+}
+
+.dp-order-controls.success .dp-order-score {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dp-order-controls.success .dp-order-timer {
+    margin-left: auto;
 }
 
 .dp-order-buttons {
     display: flex;
     gap: 10px;
+    align-items: center;
+}
+
+.dp-order-controls-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dp-order-score {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #155724;
+    font-size: 16px;
+}
+
+.dp-order-controls.success .dp-order-score {
+    display: flex;
+}
+
+.dp-order-score-bar {
+    background-color: #28a745;
+    height: 10px;
+    border-radius: 5px;
+    width: 80px;
+    position: relative;
+}
+
+.dp-order-score-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #155724;
 }
 
 .dp-order-check,
 .dp-order-reset {
-    padding: 8px 16px;
+    padding: 6px 12px;
     border: none;
-    border-radius: 6px;
-    font-weight: 600;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .dp-order-check {
@@ -630,6 +742,8 @@ body {
 
 .dp-order-check:hover {
     background-color: #14193e;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dp-order-reset {
@@ -639,19 +753,44 @@ body {
 
 .dp-order-reset:hover {
     background-color: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dp-order-timer {
-    color: #666;
+    color: #495057;
     font-size: 14px;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.dp-order-timer-display {
+    background-color: #343a40;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 13px;
+    min-width: 45px;
+    text-align: center;
 }
 
 .dp-order-info-icon {
     cursor: help;
-    opacity: 0.7;
+    opacity: 0.6;
+    color: #6c757d;
+    font-size: 12px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dee2e6;
 }
 
 /* Back to Index Button */
@@ -680,12 +819,19 @@ body {
 @media (max-width: 768px) {
     .dp-order-controls {
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
         align-items: stretch;
+        padding: 12px 16px;
     }
 
     .dp-order-buttons {
         justify-content: center;
+        order: 1;
+    }
+
+    .dp-order-timer {
+        justify-content: center;
+        order: 2;
     }
 }
 

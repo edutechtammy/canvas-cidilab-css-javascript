@@ -269,29 +269,39 @@ function addOrderControls(container, orderList, originalItems) {
     const controlsDiv = document.createElement('div');
     controlsDiv.className = 'dp-order-controls';
 
+    const leftDiv = document.createElement('div');
+    leftDiv.className = 'dp-order-controls-left';
+
     const buttonsDiv = document.createElement('div');
     buttonsDiv.className = 'dp-order-buttons';
 
     const checkButton = document.createElement('button');
     checkButton.className = 'dp-order-check';
-    checkButton.innerHTML = '✓ Check';
+    checkButton.innerHTML = '<span>✓</span> Check';
     checkButton.addEventListener('click', () => checkOrder(orderList, originalItems));
 
     const resetButton = document.createElement('button');
     resetButton.className = 'dp-order-reset';
-    resetButton.innerHTML = '↻ Reset';
+    resetButton.innerHTML = '<span>↻</span> Reset';
     resetButton.addEventListener('click', () => resetOrder(orderList, originalItems));
+
+    const scoreDiv = document.createElement('div');
+    scoreDiv.className = 'dp-order-score';
+    scoreDiv.innerHTML = 'Score <span class="dp-order-score-bar"></span> <span class="dp-order-score-text">3/3</span>';
 
     const timerDiv = document.createElement('div');
     timerDiv.className = 'dp-order-timer';
-    timerDiv.innerHTML = 'Time <span class="timer-display">0:00</span> <span class="dp-order-info-icon">ⓘ</span>';
+    timerDiv.innerHTML = 'Time <span class="dp-order-timer-display">0:00</span> <span class="dp-order-info-icon">i</span>';
 
     buttonsDiv.appendChild(checkButton);
     buttonsDiv.appendChild(resetButton);
-    controlsDiv.appendChild(buttonsDiv);
+    leftDiv.appendChild(buttonsDiv);
+    leftDiv.appendChild(scoreDiv);
+    controlsDiv.appendChild(leftDiv);
     controlsDiv.appendChild(timerDiv);
 
-    container.appendChild(controlsDiv);
+    // Insert controls after the blue wrapper container, not inside it
+    container.parentNode.insertBefore(controlsDiv, container.nextSibling);
 }
 
 function initializeDragAndDrop(orderList) {
@@ -357,15 +367,32 @@ function getDragAfterElement(container, y) {
 function checkOrder(orderList, originalItems) {
     const currentOrder = Array.from(orderList.children).map(li => li.textContent.trim());
     const isCorrect = JSON.stringify(currentOrder) === JSON.stringify(originalItems);
+    const container = orderList.closest('.dp-order-wrapper');
+    const controlsDiv = container.parentNode.querySelector('.dp-order-controls');
 
     if (isCorrect) {
-        alert('Correct! Well done.');
-    } else {
-        alert('Not quite right. Try again.');
+        // Add success state to controls
+        controlsDiv.classList.add('success');
+
+        // Add checkmarks to all items
+        Array.from(orderList.children).forEach(item => {
+            item.classList.add('correct');
+        });
+
+        // Stop timer
+        if (container.timerInterval) {
+            clearInterval(container.timerInterval);
+        }
     }
 }
 
 function resetOrder(orderList, originalItems) {
+    const container = orderList.closest('.dp-order-wrapper');
+    const controlsDiv = container.parentNode.querySelector('.dp-order-controls');
+
+    // Clear success state
+    controlsDiv.classList.remove('success');
+
     // Clear current items
     orderList.innerHTML = '';
 
@@ -382,12 +409,11 @@ function resetOrder(orderList, originalItems) {
     });
 
     // Reset timer
-    const container = orderList.closest('.dp-order-wrapper');
     resetTimer(container);
 }
 
 function startTimer(container) {
-    const timerDisplay = container.querySelector('.timer-display');
+    const timerDisplay = container.querySelector('.dp-order-timer-display');
     if (!timerDisplay) return;
 
     let seconds = 0;
