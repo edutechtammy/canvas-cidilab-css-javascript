@@ -189,7 +189,9 @@ function closeAllModals() {
     document.querySelectorAll('.dp-popover-content.show').forEach(modal => {
         modal.classList.remove('show');
     });
-}// Export for potential use in other scripts
+}
+
+// Export for potential use in other scripts
 window.CidiLabsUtils = {
     initializeButtonTabsVertical: initializeButtonTabsVertical,
     initializeFlipCards: initializeFlipCards
