@@ -19,7 +19,7 @@ This project provides CSS and JavaScript files that recreate the functionality o
 ├── flipcards.html                   # ✅ Completed - Interactive flip cards
 ├── modals.html                      # ✅ Completed - Pop-up dialog boxes
 ├── order-items.html                 # ✅ Completed - Drag-and-drop ordering
-├── match-items.html                 # 🚧 Pending implementation
+├── match-items.html                 # ✅ Completed - Click-to-match pairing activity
 ├── select-all.html                  # 🚧 Pending implementation
 ├── sort-items.html                  # 🚧 Pending implementation
 └── bootstrap.min.css/.js            # Bootstrap framework files
@@ -65,6 +65,21 @@ This project provides CSS and JavaScript files that recreate the functionality o
   - 3-card responsive grid layout
   - Click and keyboard flip functionality
   - Accessibility compliant with ARIA labels
+
+### ✅ Match Items
+- **File**: `match-items.html`
+- **Functionality**: Click-based matching game for pairing related items
+- **Features**:
+  - Click-to-match interaction model (not drag-and-drop)
+  - Visual feedback with checkmarks on successful matches
+  - Randomized item positions on load and reset
+  - TSTC branding with Texas Blue background (#1d2757) and red borders (#d13138)
+  - Matched Items section with green-bordered paired items
+  - Control panel with Check/Reset buttons and live timer
+  - Success state with soft green background showing final score and attempts
+  - Attempt tracking and progress display
+  - Reset functionality without confirmation dialog
+  - Fully accessible with keyboard navigation support
 
 ## How to Use
 
@@ -238,12 +253,14 @@ When adding new components:
 ## 🎯 Session Context & Progress Tracking
 
 ### Current Session Status (Jan 27, 2026)
-**Completed Components:**
+**✅ Completed Components:**
 - ✅ **Button Tabs Vertical**: Full functionality with TSTC branding and secondary color option
 - ✅ **Flipcards**: 3D flip animations, enhanced icons, compact spacing (resolved CSS troubleshooting)
 - ✅ **Modals**: Canvas-accurate styling, proper trigger integration, template integrity restored
+- ✅ **Order Items**: Drag-and-drop ordering functionality
+- ✅ **Match Items**: Click-to-match pairing activity with randomization and success states
 
-**Active Focus**: Modals component finalized with clean CidiLabs template structure preserved
+**Active Focus**: Match Items component completed with full functionality
 
 ### Key Session Learnings:
 1. **Context Fatigue Risk**: Extended sessions can lead to drift from core constraints

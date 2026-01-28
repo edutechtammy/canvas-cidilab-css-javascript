@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeFlipCards();
     initializeModals();
     initializeOrderItems();
+    initializeMatchItems();
 });
 
 // =========================================
@@ -412,9 +413,348 @@ function resetTimer(container) {
 
 /**
  * Initialize Match Items functionality
- * Drag and drop matching activities with CidiLabs classes
+ * Click-based matching activities with visual feedback
  */
 function initializeMatchItems() {
-    // Match Items functionality will be implemented here
-    console.log('Match Items functionality ready for implementation');
+    const matchContainers = document.querySelectorAll('.dp-match-items');
+
+    matchContainers.forEach(container => {
+        // Create matched items section if it doesn't exist
+        createMatchedItemsSection(container);
+
+        // Create control panel
+        createControlPanel(container);
+
+        // Initialize game state
+        const gameState = {
+            selectedItems: [],
+            matchedPairs: [],
+            isProcessing: false,
+            startTime: Date.now(),
+            timerInterval: null,
+            attempts: 0
+        };
+
+        // Start timer
+        startMatchTimer(container, gameState);
+
+        // Get all matchable items
+        const items = container.querySelectorAll('.dp-match-text dt, .dp-match-text dd');
+
+        // Randomize the order of items
+        randomizeItems(container);
+
+        // Add click handlers to items
+        items.forEach(item => {
+            item.addEventListener('click', function () {
+                handleItemClick(item, gameState, container);
+            });
+        });
+
+        // Add control handlers
+        setupControlHandlers(container, gameState);
+    });
+}
+
+/**
+ * Create the matched items section
+ */
+function createMatchedItemsSection(container) {
+    if (!container.querySelector('.dp-matched-items')) {
+        const matchedSection = document.createElement('div');
+        matchedSection.className = 'dp-matched-items';
+        matchedSection.innerHTML = `
+            <h4 class="dp-has-icon">
+                <i class="fas fa-check"><span class="dp-icon-content" style="display: none;">&nbsp;</span></i>
+                Matched Items
+            </h4>
+            <div class="matched-pairs-container"></div>
+        `;
+        container.appendChild(matchedSection);
+    }
+}
+
+/**
+ * Handle item click
+ */
+function handleItemClick(item, gameState, container) {
+    // Prevent interaction if processing or item is disabled
+    if (gameState.isProcessing || item.classList.contains('disabled')) {
+        return;
+    }
+
+    // Toggle selection
+    if (item.classList.contains('selected')) {
+        item.classList.remove('selected');
+        gameState.selectedItems = gameState.selectedItems.filter(i => i !== item);
+    } else {
+        item.classList.add('selected');
+        gameState.selectedItems.push(item);
+    }
+
+    // Check if we have two items selected
+    if (gameState.selectedItems.length === 2) {
+        checkForMatch(gameState, container);
+    }
+}
+
+/**
+ * Check if selected items are a match
+ */
+function checkForMatch(gameState, container) {
+    gameState.isProcessing = true;
+    gameState.attempts++; // Track attempts
+
+    const [item1, item2] = gameState.selectedItems;
+
+    // Check if items have the same pair-id
+    const pairId1 = item1.getAttribute('data-pair-id');
+    const pairId2 = item2.getAttribute('data-pair-id');
+
+    if (pairId1 === pairId2) {
+        // Match found!
+        showMatchFeedback(item1, item2, () => {
+            processMatch(item1, item2, gameState, container);
+        });
+    } else {
+        // No match
+        setTimeout(() => {
+            item1.classList.remove('selected');
+            item2.classList.remove('selected');
+            gameState.selectedItems = [];
+            gameState.isProcessing = false;
+        }, 1000);
+    }
+}/**
+ * Show visual feedback for a match
+ */
+function showMatchFeedback(item1, item2, callback) {
+    // Add checkmarks
+    const checkmark1 = document.createElement('span');
+    checkmark1.className = 'checkmark';
+    checkmark1.innerHTML = ' ✓';
+    item1.appendChild(checkmark1);
+
+    const checkmark2 = document.createElement('span');
+    checkmark2.className = 'checkmark';
+    checkmark2.innerHTML = ' ✓';
+    item2.appendChild(checkmark2);
+
+    // Add matched styling
+    item1.classList.add('matched');
+    item2.classList.add('matched');
+
+    // Remove checkmarks and continue after delay
+    setTimeout(() => {
+        checkmark1.remove();
+        checkmark2.remove();
+        callback();
+    }, 1500);
+}
+
+/**
+ * Process a successful match
+ */
+function processMatch(item1, item2, gameState, container) {
+    // Move to matched section
+    const matchedContainer = container.querySelector('.matched-pairs-container');
+    const matchedPair = document.createElement('div');
+    matchedPair.className = 'matched-pair';
+    matchedPair.innerHTML = `
+        <div class="pair-item">${item1.textContent}</div>
+        <div class="pair-item">${item2.textContent}</div>
+    `;
+    matchedContainer.appendChild(matchedPair);
+
+    // Disable original items
+    item1.classList.remove('selected', 'matched');
+    item2.classList.remove('selected', 'matched');
+    item1.classList.add('disabled');
+    item2.classList.add('disabled');
+
+    // Update game state
+    gameState.matchedPairs.push([item1, item2]);
+    gameState.selectedItems = [];
+    gameState.isProcessing = false;
+
+    // Check if game is complete
+    checkGameComplete(container, gameState);
+}
+
+/**
+ * Check if all pairs are matched
+ */
+function checkGameComplete(container, gameState) {
+    const allItems = container.querySelectorAll('.dp-match-text dt, .dp-match-text dd');
+    const disabledItems = container.querySelectorAll('.dp-match-text dt.disabled, .dp-match-text dd.disabled');
+
+    if (allItems.length === disabledItems.length) {
+        setTimeout(() => {
+            showGameSuccess(container, gameState);
+        }, 500);
+    }
+}
+
+/**
+ * Show game success state
+ */
+function showGameSuccess(container, gameState) {
+    const controlPanel = container.parentNode.querySelector('.match-controls');
+    const totalPairs = container.querySelectorAll('.dp-match-text dt, .dp-match-text dd').length / 2;
+
+    // Stop timer
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+    }
+
+    // Switch to success state
+    controlPanel.classList.add('game-complete');
+
+    // Update score and attempts
+    const scoreText = controlPanel.querySelector('.score-text');
+    const attemptsBadge = controlPanel.querySelector('.attempts-badge');
+
+    scoreText.textContent = `${totalPairs}/${totalPairs}`;
+    attemptsBadge.textContent = gameState.attempts;
+}/**
+ * Create the control panel with buttons and timer
+ */
+function createControlPanel(container) {
+    if (!container.querySelector('.match-controls')) {
+        const controlPanel = document.createElement('div');
+        controlPanel.className = 'match-controls';
+        controlPanel.innerHTML = `
+            <div class="match-controls-left">
+                <button class="btn btn-check" type="button">
+                    <i class="fas fa-check"></i> Check
+                </button>
+                <button class="btn btn-reset" type="button">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+            </div>
+            <div class="match-controls-success">
+                <div class="score-display">
+                    <span>Score</span>
+                    <div class="score-bar"></div>
+                    <span class="score-text">0/0</span>
+                </div>
+                <div class="attempts-display">
+                    <span>Attempts</span>
+                    <div class="attempts-badge">0</div>
+                </div>
+            </div>
+            <div class="timer">
+                <span>Time</span>
+                <div class="timer-display">0:00</div>
+                <i class="fas fa-info-circle"></i>
+            </div>
+        `;
+
+        // Insert after the main match items container
+        container.parentNode.insertBefore(controlPanel, container.nextSibling);
+    }
+}/**
+ * Setup control button handlers
+ */
+function setupControlHandlers(container, gameState) {
+    const controlPanel = container.parentNode.querySelector('.match-controls');
+    const checkBtn = controlPanel.querySelector('.btn-check');
+    const resetBtn = controlPanel.querySelector('.btn-reset');
+
+    checkBtn.addEventListener('click', () => {
+        checkGameResults(container, gameState);
+    });
+
+    resetBtn.addEventListener('click', () => {
+        resetGame(container, gameState);
+    });
+}
+
+/**
+ * Start the game timer
+ */
+function startMatchTimer(container, gameState) {
+    const controlPanel = container.parentNode.querySelector('.match-controls');
+    const timerDisplay = controlPanel.querySelector('.timer-display');
+
+    gameState.timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - gameState.startTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
+/**
+ * Check game results
+ */
+function checkGameResults(container, gameState) {
+    const allItems = container.querySelectorAll('.dp-match-text dt, .dp-match-text dd');
+    const disabledItems = container.querySelectorAll('.dp-match-text dt.disabled, .dp-match-text dd.disabled');
+    const totalPairs = allItems.length / 2;
+    const matchedPairs = disabledItems.length / 2;
+
+    if (matchedPairs === totalPairs) {
+        alert(`Perfect! All ${totalPairs} pairs matched correctly!`);
+    } else {
+        alert(`You have matched ${matchedPairs} out of ${totalPairs} pairs. Keep trying!`);
+    }
+}
+
+/**
+ * Reset the game
+ */
+function resetGame(container, gameState) {
+    const controlPanel = container.parentNode.querySelector('.match-controls');
+
+    // Stop timer
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+    }
+
+    // Reset success state
+    controlPanel.classList.remove('game-complete');
+
+    // Reset all items
+    const items = container.querySelectorAll('.dp-match-text dt, .dp-match-text dd');
+    items.forEach(item => {
+        item.classList.remove('selected', 'matched', 'disabled');
+    });
+
+    // Clear matched items section
+    const matchedContainer = container.querySelector('.matched-pairs-container');
+    if (matchedContainer) {
+        matchedContainer.innerHTML = '';
+    }
+
+    // Reset game state
+    gameState.selectedItems = [];
+    gameState.matchedPairs = [];
+    gameState.isProcessing = false;
+    gameState.startTime = Date.now();
+    gameState.attempts = 0;
+
+    // Randomize items again for new game
+    randomizeItems(container);
+
+    // Restart timer
+    startMatchTimer(container, gameState);
+}/**
+ * Randomize the order of items in the container
+ */
+function randomizeItems(container) {
+    const itemContainer = container.querySelector('.dp-match-text');
+    const items = Array.from(itemContainer.querySelectorAll('dt, dd'));
+
+    // Fisher-Yates shuffle algorithm
+    for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+    }
+
+    // Clear the container and append items in new order
+    itemContainer.innerHTML = '';
+    items.forEach(item => {
+        itemContainer.appendChild(item);
+    });
 }

@@ -8,36 +8,29 @@
  * These are foundational Canvas classes that work across all CidiLabs components
  * ======================================== */
 
-/* dp-has-icon - Core icon positioning system (generic utility) */
+/* dp-has-icon - Core icon positioning system (flexbox approach) */
 .dp-has-icon {
-    position: relative;
-    padding-left: 35px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* FontAwesome icon positioning for all activities */
+/* FontAwesome icon styling for all activities */
 .dp-has-icon .fas,
 .dp-has-icon .fa,
 .dp-has-icon i {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 25px;
-    height: 30px;
-    text-align: center;
-    line-height: 28px;
-    font-style: normal;
-    font-size: 35px;
-    
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    line-height: 1;
 }
 
 /* H4 general styling */
 h4 {
     display: inline-block;
     margin: 0;
-    line-height: 1.9;
-    font-weight: bold;
+    line-height: 1.0;
     text-align: left;
+    font-size: 1.5rem;
 }
 
 /* Override for flipcards - they have custom positioning */
@@ -703,6 +696,221 @@ body {
     .dp-order-buttons {
         justify-content: center;
     }
+}
+
+/* ===========================================
+   MATCH ITEMS COMPONENT STYLES
+   =========================================== */
+
+/* Main white container for unmatched items */
+.dp-unmatched-items {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+/* Items to Match header styling */
+.dp-unmatched-items .unmatched-items-header {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Individual draggable items */
+.dp-match-text dt,
+.dp-match-text dd {
+    display: inline-block;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.2;
+    transition: all 0.3s ease;
+}
+
+/* Item states */
+.dp-match-text dt:hover,
+.dp-match-text dd:hover {
+    background-color: #e9ecef;
+}
+
+.dp-match-text dt.selected,
+.dp-match-text dd.selected {
+    background-color: #cce5ff;
+    border-color: #007bff;
+}
+
+.dp-match-text dt.matched,
+.dp-match-text dd.matched {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+}
+
+.dp-match-text dt.disabled,
+.dp-match-text dd.disabled {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Matched Items section */
+.dp-matched-items {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 15px;
+    min-height: 80px;
+}
+
+.dp-matched-items h4 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Matched pair display */
+.matched-pair {
+    display: inline-flex;
+    background-color: white;
+    border: 2px solid #28a745;
+    border-radius: 6px;
+    margin: 5px;
+    overflow: hidden;
+}
+
+.matched-pair .pair-item {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.matched-pair .pair-item:first-child {
+    border-right: 1px solid #28a745;
+}
+
+/* Checkmark animation */
+.checkmark {
+    color: #28a745;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+/* Match Items control panel */
+.match-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px solid #dee2e6;
+}
+
+.match-controls-left {
+    display: flex;
+    gap: 10px;
+}
+
+.match-controls .btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.match-controls .btn-check {
+    background-color: #1d2757;
+    color: white;
+}
+
+.match-controls .btn-check:hover {
+    background-color: #0f1a3a;
+}
+
+.match-controls .btn-reset {
+    background-color: #6c757d;
+    color: white;
+}
+
+.match-controls .btn-reset:hover {
+    background-color: #5a6268;
+}
+
+.match-controls .timer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #495057;
+}
+
+.match-controls .timer-display {
+    background-color: #343a40;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+/* Success state for completed game */
+.match-controls.game-complete {
+    background-color: #d4f4dd;
+    border-color: #28a745;
+}
+
+.match-controls.game-complete .btn-check {
+    display: none;
+}
+
+.match-controls-success {
+    display: none;
+    align-items: center;
+    gap: 20px;
+}
+
+.match-controls.game-complete .match-controls-success {
+    display: flex;
+}
+
+.score-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.score-bar {
+    background-color: #28a745;
+    height: 8px;
+    border-radius: 4px;
+    min-width: 100px;
+}
+
+.attempts-display {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #495057;
+}
+
+.attempts-badge {
+    background-color: #6c757d;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 ```
