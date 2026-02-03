@@ -969,7 +969,7 @@ body {
     background-color: #f8f9fa;
     padding: 15px 20px;
     border-radius: 8px;
-    margin-top: 20px;
+    margin-top: 8px;
     border: 1px solid #dee2e6;
 }
 
@@ -979,13 +979,15 @@ body {
 }
 
 .match-controls .btn {
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 14px;
+    padding: 16px 24px;
+    border-radius: 6px;
+    font-size: 16px;
     font-weight: 500;
     cursor: pointer;
     border: none;
     transition: background-color 0.3s ease;
+    min-width: 120px;
+    min-height: 50px;
 }
 
 .match-controls .btn-check {
@@ -998,12 +1000,12 @@ body {
 }
 
 .match-controls .btn-reset {
-    background-color: #6c757d;
-    color: white;
+    background-color: #e9ecef;
+    color: #333;
 }
 
 .match-controls .btn-reset:hover {
-    background-color: #5a6268;
+    background-color: #dee2e6;
 }
 
 .match-controls .timer {
